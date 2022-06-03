@@ -14,12 +14,9 @@ namespace ZhEaIsNsAaBn.Xamarin
         where TView : View, new()
     {
         public static readonly BindableProperty NavigationParametersProperty = BindableProperty.Create(
-            nameof(NavigationParameters), typeof(INavigationParameters), typeof(PrismLazyView<TView>), BindingMode.TwoWay);
+            nameof(NavigationParameters), typeof(INavigationParameters), typeof(PrismLazyView<TView>));
 
-        private void OnNavigationParametersChanged(BindableObject bindable, object oldValue, object newValue)
-        {
-            ((IPrismLazyViewModel)Content.BindingContext).LazyLoadInitialize(NavigationParameters);
-        }
+
 
         public INavigationParameters NavigationParameters
         {
@@ -32,11 +29,13 @@ namespace ZhEaIsNsAaBn.Xamarin
         }
 
 
+
         public override ValueTask LoadViewAsync()
         {
-            var Content = (TView)PrismApplicationBase.Current.Container.Resolve(typeof(TView));
+            var view = (TView)PrismApplicationBase.Current.Container.Resolve(typeof(TView));
 
-            ((IPrismLazyViewModel)Content.BindingContext).LazyLoadInitialize(NavigationParameters);
+            ((IPrismLazyViewModel)view.BindingContext).LazyLoadInitialize(NavigationParameters);
+            Content = view;
 
             SetIsLoaded(true);
             return new ValueTask(Task.FromResult(true));

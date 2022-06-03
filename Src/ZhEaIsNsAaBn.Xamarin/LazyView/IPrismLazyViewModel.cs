@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ZhEaIsNsAaBn.Xamarin
 {
-    internal interface IPrismLazyViewModel
+    public interface IPrismLazyViewModel
     {
         void LazyLoadInitialize(INavigationParameters parameters);
     }
