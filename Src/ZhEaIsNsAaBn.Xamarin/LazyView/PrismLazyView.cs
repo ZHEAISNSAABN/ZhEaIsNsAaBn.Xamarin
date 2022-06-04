@@ -24,7 +24,13 @@ namespace ZhEaIsNsAaBn.Xamarin
             set
             {
                 SetValue(NavigationParametersProperty, value);
-                ((IPrismLazyViewModel)Content.BindingContext).LazyLoadInitialize(NavigationParameters);
+                if(Content != null)
+                    try
+                    {
+                        ((IPrismLazyViewModel)Content.BindingContext).LazyLoadInitialize(NavigationParameters);
+                    }
+                    catch { }
+
             }
         }
 
@@ -34,7 +40,12 @@ namespace ZhEaIsNsAaBn.Xamarin
         {
             var view = (TView)PrismApplicationBase.Current.Container.Resolve(typeof(TView));
 
-            ((IPrismLazyViewModel)view.BindingContext).LazyLoadInitialize(NavigationParameters);
+            try
+            {
+                ((IPrismLazyViewModel)Content.BindingContext).LazyLoadInitialize(NavigationParameters);
+            }
+            catch { }
+
             Content = view;
 
             SetIsLoaded(true);
